@@ -12,6 +12,10 @@ OVMF=$VMDIR/firmware
 	CPUS=1
 }
 
+[[ -z "$CORES" ]] && {
+	CORES=1
+}
+
 [[ -z "$SYSTEM_DISK" ]] && {
     echo "Please set the SYSTEM_DISK environment variable"
     exit 1
@@ -32,7 +36,7 @@ qemu-system-x86_64 \
     -enable-kvm \
     -m $MEM \
     -machine q35,accel=kvm \
-    -smp $CPUS \
+    -smp $CPUS, cores=$CORES \
     -cpu Penryn,vendor=GenuineIntel,kvm=on,+sse3,+sse4.2,+aes,+xsave,+avx,+xsaveopt,+xsavec,+xgetbv1,+avx2,+bmi2,+smep,+bmi1,+fma,+movbe,+invtsc \
     -device isa-applesmc,osk="$OSK" \
     -smbios type=2 \
